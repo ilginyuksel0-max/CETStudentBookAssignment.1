@@ -1,0 +1,19 @@
+@model CetStudentBook.Models.Book
+
+<h2>Delete Book</h2>
+
+<p>Are you sure you want to delete this?</p>
+
+<ul>
+    <li><strong>Name:</strong> @Model.Name</li>
+    <li><strong>Author:</strong> @Model.Author</li>
+    <li><strong>PublishDate:</strong> @Model.PublishDate.ToString("yyyy-MM-dd")</li>
+    <li><strong>PageCount:</strong> @Model.PageCount</li>
+    <li><strong>IsSecondHand:</strong> @(Model.IsSecondHand ? "Yes" : "No")</li>
+</ul>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit">Confirm Delete</button>
+    <a asp-action="Index">Cancel</a>
+</form>

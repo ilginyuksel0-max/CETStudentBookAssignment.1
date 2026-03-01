@@ -1,0 +1,45 @@
+@model CetStudentBook.Models.Book
+
+<h2>Edit Book</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Author"></label>
+        <input asp-for="Author" />
+        <span asp-validation-for="Author" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="PublishDate"></label>
+        <input asp-for="PublishDate" type="date" />
+        <span asp-validation-for="PublishDate" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="PageCount"></label>
+        <input asp-for="PageCount" />
+        <span asp-validation-for="PageCount" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="IsSecondHand"></label>
+        <input asp-for="IsSecondHand" />
+        <span asp-validation-for="IsSecondHand" class="text-danger"></span>
+    </div>
+
+    <button type="submit">Save</button>
+    <a asp-action="Index">Back</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

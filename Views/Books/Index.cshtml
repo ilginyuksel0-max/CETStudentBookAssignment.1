@@ -1,0 +1,34 @@
+@model IEnumerable<CetStudentBook.Models.Book>
+
+<h2>Books</h2>
+
+<p><a asp-action="Create">Create New</a></p>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Author</th>
+        <th>PublishDate</th>
+        <th>PageCount</th>
+        <th>IsSecondHand</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var b in Model)
+    {
+        <tr>
+            <td>@b.Name</td>
+            <td>@b.Author</td>
+            <td>@b.PublishDate.ToString("yyyy-MM-dd")</td>
+            <td>@b.PageCount</td>
+            <td>@(b.IsSecondHand ? "Yes" : "No")</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@b.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@b.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
