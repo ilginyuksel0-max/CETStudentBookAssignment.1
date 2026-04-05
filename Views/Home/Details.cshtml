@@ -1,0 +1,31 @@
+@model CetStudentBook.Models.Book
+
+<div class="container mt-4">
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.ImageUrl" class="img-fluid rounded shadow-sm" style="max-height:500px; object-fit:cover;" />
+        </div>
+
+        <div class="col-md-6">
+            <h2>@Model.Name</h2>
+            <h4>@Model.Author</h4>
+            <h3>@Model.PageCount pages</h3>
+
+            <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-danger me-2">
+                Add to Cart
+            </a>
+
+            <a asp-controller="Cart" asp-action="Buy" asp-route-id="@Model.Id" class="btn btn-success">
+                Buy Now
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+@model IEnumerable<CetStudentBook.Models.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h2>My Orders</h2>
+
+@if (!Model.Any())
+{
+    <p>You do not have any orders yet.</p>
+}
+else
+{
+    @foreach (var order in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Order Date: @order.OrderDate.ToString("yyyy-MM-dd HH:mm")
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    @foreach (var item in order.OrderItems)
+                    {
+                        <li>
+                            @item.Book?.Name - Quantity: @item.Quantity - Price: @item.Price TL
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+}

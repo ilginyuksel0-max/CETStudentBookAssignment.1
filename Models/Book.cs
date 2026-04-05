@@ -7,6 +7,8 @@ namespace CetStudentBook.Models
     {
         public int Id { get; set; }
 
+        public string? ImageUrl { get; set; }
+
         [Required(ErrorMessage = "Kitap adı zorunludur")]
         [StringLength(200, MinimumLength = 2, ErrorMessage = "Kitap adı 2-200 karakter olmalı")]
         public string Name { get; set; }
@@ -25,5 +27,8 @@ namespace CetStudentBook.Models
 
         [Required(ErrorMessage = "İkinci el bilgisi zorunludur")]
         public bool IsSecondHand { get; set; }
+
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
     }
 }
