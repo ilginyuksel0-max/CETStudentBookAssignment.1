@@ -130,6 +130,9 @@ namespace CetStudentBook.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                
+                user.EmailConfirmed = true;
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -159,16 +162,17 @@ namespace CetStudentBook.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return LocalRedirect(returnUrl ?? Url.Content("~/"));
                     }
                 }
                 foreach (var error in result.Errors)
                 {
+                    Console.WriteLine("REGISTER ERROR: " + error.Description);
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            
             return Page();
         }
 

@@ -1,0 +1,64 @@
+@model CetStudentBook.Models.CheckoutViewModel
+
+<h2>Checkout</h2>
+
+<form asp-action="Index" method="post">
+
+    <h4>Personal & Address Information</h4>
+
+    <div class="mb-3">
+        <label>Full Name</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Phone</label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>City</label>
+        <input asp-for="City" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>District</label>
+        <input asp-for="District" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Address</label>
+        <textarea asp-for="AddressLine" class="form-control"></textarea>
+    </div>
+
+    <hr />
+
+    <h4>Payment Information</h4>
+
+    <div class="mb-3">
+        <label>Card Holder Name</label>
+        <input asp-for="CardHolderName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Card Number</label>
+        <input asp-for="CardNumber" class="form-control" placeholder="1111 2222 3333 4444" />
+    </div>
+
+    <div class="mb-3">
+        <label>Expiration Date</label>
+        <input asp-for="ExpirationDate" class="form-control" placeholder="MM/YY" />
+    </div>
+
+    <div class="mb-3">
+        <label>CVV</label>
+        <input asp-for="CVV" class="form-control" placeholder="123" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Complete Order</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

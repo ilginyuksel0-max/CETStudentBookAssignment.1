@@ -8,10 +8,23 @@ namespace CetStudentBook.Models
     {
         public int Id { get; set; }
 
-        [Required]
         public string UserId { get; set; }
 
-        public DateTime OrderDate { get; set; } = DateTime.Now;
+        public DateTime OrderDate { get; set; }
+
+        [Required]
+        public string FullName { get; set; }
+
+        [Required]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        public string AddressLine { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        public string? PostalCode { get; set; }
 
         public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }

@@ -20,6 +20,8 @@ namespace CetStudentBook.Models
         [Required(ErrorMessage = "Yayın tarihi zorunludur")]
         [DataType(DataType.Date)]
         public DateTime PublishDate { get; set; }
+        
+        public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Sayfa sayısı zorunludur")]
         [Range(1, 10000, ErrorMessage = "Sayfa sayısı 1-10000 arasında olmalı")]

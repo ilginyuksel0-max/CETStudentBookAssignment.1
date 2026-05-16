@@ -16,10 +16,19 @@ namespace CetStudentBook.Controllers
         }
 
         // GET: /Books
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            var books = await _db.Books.AsNoTracking().ToListAsync();
-            return View(books);
+            var books = _db.Books
+                .Include(b => b.Category)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                books = books.Where(b => b.Name.Contains(searchString) 
+                                         || b.Author.Contains(searchString));
+            }
+
+            return View(await books.ToListAsync());
         }
 
         // GET: /Books/Create
@@ -92,6 +101,17 @@ namespace CetStudentBook.Controllers
             _db.Books.Remove(book);
             await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+        
+        public async Task<IActionResult> Details(int id)
+        {
+            var book = await _db.Books
+                .Include(b => b.Category)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            if (book == null) return NotFound();
+
+            return View(book);
         }
     }
 }

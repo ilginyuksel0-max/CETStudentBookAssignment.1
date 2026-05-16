@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CetStudentBook.Controllers
 {
-    [Authorize]
+    
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +18,7 @@ namespace CetStudentBook.Controllers
             _context = context;
             _userManager = userManager;
         }
-
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
@@ -30,7 +30,7 @@ namespace CetStudentBook.Controllers
 
             return View(cartItems);
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Add(int id)
         {
@@ -60,63 +60,59 @@ namespace CetStudentBook.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Buy(int id)
+        public IActionResult Checkout(int bookid)
         {
-            var userId = _userManager.GetUserId(User);
-
-            var book = await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
-            if (book == null)
-                return NotFound();
-
-            var order = new Order
+            if (!User.Identity!.IsAuthenticated)
             {
-                UserId = userId!,
-                OrderDate = DateTime.Now,
-                OrderItems = new List<OrderItem>
+                return RedirectToPage("/Account/Register", new
                 {
-                    new OrderItem
-                    {
-                        BookId = book.Id,
-                        Quantity = 1,
-                        Price = book.PageCount
-                    }
-                }
+                    area = "Identity",
+                    returnUrl = Url.Action("Checkout", "Cart", new { id = bookid })
+                });
+            }
+
+            var model = new CheckoutViewModel
+            {
+                BookId = bookid
             };
 
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("MyOrders", "Orders");
+            return View(model);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> BuyCart()
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Checkout(CheckoutViewModel model)
         {
-            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.GetUserAsync(User);
 
-            var cartItems = await _context.CartItems
-                .Include(c => c.Book)
-                .Where(c => c.UserId == userId)
-                .ToListAsync();
+            if (user == null)
+                return RedirectToAction("Login", "Account");
 
-            if (!cartItems.Any())
-                return RedirectToAction("Index");
+            if (!ModelState.IsValid)
+                return View(model);
 
             var order = new Order
             {
-                UserId = userId!,
+                UserId = user.Id,
                 OrderDate = DateTime.Now,
-                OrderItems = cartItems.Select(c => new OrderItem
-                {
-                    BookId = c.BookId,
-                    Quantity = c.Quantity,
-                    Price = c.Book!.PageCount
-                }).ToList()
+                FullName = model.FullName,
+                PhoneNumber = model.PhoneNumber,
+                AddressLine = model.AddressLine,
+                City = model.City,
+                PostalCode = model.PostalCode,
+                OrderItems = new List<OrderItem>()
             };
 
-            _context.Orders.Add(order);
-            _context.CartItems.RemoveRange(cartItems);
+            if (model.BookId > 0 )
+            {
+                order.OrderItems.Add(new OrderItem
+                {
+                    BookId = model.BookId,
+                    Quantity = 1
+                });
+            }
 
+            _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("MyOrders", "Orders");

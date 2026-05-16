@@ -1,0 +1,29 @@
+@model CetStudentBook.Models.Book
+
+<div class="container mt-4">
+    <div class="row">
+
+        <div class="col-md-4">
+            <img src="@Model.ImageUrl" class="img-fluid" />
+        </div>
+
+        <div class="col-md-8">
+            <h2>@Model.Name</h2>
+            <p><strong>Author:</strong> @Model.Author</p>
+            <p><strong>Pages:</strong> @Model.PageCount</p>
+            <p><strong>Publish Date:</strong> @Model.PublishDate.ToShortDateString()</p>
+            <p><strong>Category:</strong> @Model.Category?.Name</p>
+
+            <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
+               class="btn btn-danger">Add to Cart</a>
+
+            <a asp-controller="Checkout"
+               asp-action="Index"
+               asp-route-bookId="@Model.Id"
+               class="btn btn-warning">
+                Buy Now
+            </a>
+        </div>
+
+    </div>
+</div>

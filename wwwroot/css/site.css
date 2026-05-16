@@ -1,31 +1,144 @@
-html {
+body {
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  background: white !important;
+  border-bottom: 1px solid #eee;
+  padding: 18px 40px;
+}
+
+.navbar-brand {
+  font-weight: 800;
+  font-size: 26px;
+  color: #222 !important;
+}
+
+.nav-link {
+  color: #222 !important;
+  font-weight: 500;
+  margin: 0 8px;
+}
+
+.btn-primary,
+.btn-success,
+.btn-outline-danger {
+  background-color: #ffc400 !important;
+  border-color: #ffc400 !important;
+  color: #222 !important;
+  font-weight: 700;
+  border-radius: 22px;
+}
+
+.card {
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.card-text {
   font-size: 14px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.card {
+  border-radius: 10px;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.card-body {
+  padding: 16px;
 }
 
-html {
+.hero-banner {
+  background: #ffc400;
+  border-radius: 18px;
+  padding: 24px 32px;
+  margin: 20px 0 30px 0;
+}
+
+.hero-banner h1 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.hero-banner p {
+  font-size: 15px;
+  margin-bottom: 0;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  transition: 0.2s;
   position: relative;
-  min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+.hover-area {
+  opacity: 0;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  transition: 0.3s;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+
+.product-card:hover .hover-area {
+  opacity: 1;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.product-card:hover {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+
+.product-img {
+  height: 160px;
+  object-fit: contain;
+}
+
+.product-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+  height: 38px;
+  overflow: hidden;
+}
+
+.product-author {
+  font-size: 12px;
+  color: #777;
+}
+
+.product-price {
+  font-size: 16px;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.add-cart-btn {
+  background: #ffc400;
+  color: #222;
+  border-radius: 20px;
+  padding: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
 }

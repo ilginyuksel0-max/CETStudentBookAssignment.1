@@ -39,7 +39,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
-                        
+                        <form class="d-flex" asp-controller="Books" asp-action="Index">
+                            <input class="form-control me-2" type="search" name="searchString" placeholder="Search books..." />
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Cart" asp-action="Index">Cart</a>

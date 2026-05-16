@@ -23,6 +23,7 @@
         <tr>
             <td>@b.Name</td>
             <td>@b.Author</td>
+            <td>@b.Category?.Name</td>
             <td>@b.PublishDate.ToString("yyyy-MM-dd")</td>
             <td>@b.PageCount</td>
             <td>@(b.IsSecondHand ? "Yes" : "No")</td>

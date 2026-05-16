@@ -1,36 +1,43 @@
-﻿<div class="container mt-4">
+﻿@model IEnumerable<CetStudentBook.Models.Book>
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h3 style="font-weight:800;">Popüler Kitaplar</h3>
+        <p class="text-muted">En çok tercih edilen kitapları keşfet.</p>
+    </div>
+
     <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-md-3 mb-4">
-                <div class="card h-100 shadow-sm">
+            <div class="col-lg-2 col-md-3 col-6 mb-4">
+                <div class="product-card">
 
                     @if (!string.IsNullOrEmpty(item.ImageUrl))
                     {
-                        <img src="@item.ImageUrl" class="card-img-top" style="height:250px; object-fit:cover;" alt="@item.Name" />
+                        <img src="@item.ImageUrl" class="product-img w-100" />
                     }
                     else
                     {
-                        <img src="https://via.placeholder.com/300x180?text=No+Image" class="card-img-top" style="height:250px; object-fit:cover;" alt="No Image" />
+                        <img src="https://via.placeholder.com/200x260?text=No+Image" class="product-img w-100" />
                     }
 
-                    <div class="card-body">
-                        <h5>@item.Name</h5>
-                        <p>@item.Author</p>
-                        <p><strong>@item.PageCount pages</strong></p>
+                    <div class="product-title mt-2">@item.Name</div>
+                    <div class="product-author">@item.Author</div>
+                    
+                    
+                    <div class="discount-badge">%50</div>
 
-                        <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary w-100 mb-2">
-                            View Book
-                        </a>
+                    <!-- GEÇİCİ FİYAT -->
+                    <div class="product-price">250,00 TL</div>
 
-                        <a asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" class="btn btn-outline-danger w-100 mb-2">
-                            Add to Cart
-                        </a>
+                    <a asp-controller="Books"
+                       asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="add-cart-btn mt-2 text-center d-block">
+                        İncele
+                    </a>
 
-                        <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.Id" class="btn btn-success w-100">
-                            Buy Now
-                        </a>
-                    </div>
                 </div>
             </div>
         }
