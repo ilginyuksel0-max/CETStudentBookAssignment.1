@@ -1,29 +1,122 @@
 @model CetStudentBook.Models.Book
+@using Microsoft.AspNetCore.Identity
+@using CetStudentBook.Models
+@inject SignInManager<ApplicationUser> SignInManager
 
 <div class="container mt-4">
-    <div class="row">
 
-        <div class="col-md-4">
-            <img src="@Model.ImageUrl" class="img-fluid" />
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Message"]
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.ImageUrl" class="img-fluid rounded shadow-sm" style="max-height:500px; object-fit:cover;" />
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-6">
             <h2>@Model.Name</h2>
-            <p><strong>Author:</strong> @Model.Author</p>
-            <p><strong>Pages:</strong> @Model.PageCount</p>
-            <p><strong>Publish Date:</strong> @Model.PublishDate.ToShortDateString()</p>
-            <p><strong>Category:</strong> @Model.Category?.Name</p>
+            <h4>@Model.Author</h4>
+            <h3>@Model.PageCount pages</h3>
 
-            <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id"
-               class="btn btn-danger">Add to Cart</a>
+            @if (Model.Reviews.Any())
+            {
+                <p>
+                    ⭐ @Model.Reviews.Average(r => r.Rating).ToString("0.0") / 5
+                    (@Model.Reviews.Count review)
+                </p>
+            }
+            else
+            {
+                <p>No reviews yet.</p>
+            }
 
-            <a asp-controller="Checkout"
-               asp-action="Index"
-               asp-route-bookId="@Model.Id"
-               class="btn btn-warning">
+            <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.Id" class="btn btn-danger me-2">
+                Add to Cart
+            </a>
+
+            <a asp-controller="Cart" asp-action="Buy" asp-route-id="@Model.Id" class="btn btn-success">
                 Buy Now
             </a>
         </div>
-
     </div>
+
+    <hr class="my-4" />
+
+    <h3>Customer Reviews</h3>
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <form asp-controller="Home" asp-action="AddReview" method="post" class="mb-4">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="bookId" value="@Model.Id" />
+
+            <div class="mb-3">
+                <label class="form-label">Rating</label>
+                <select name="rating" class="form-select" required>
+                    <option value="">Select rating</option>
+                    <option value="5">⭐⭐⭐⭐⭐ 5</option>
+                    <option value="4">⭐⭐⭐⭐ 4</option>
+                    <option value="3">⭐⭐⭐ 3</option>
+                    <option value="2">⭐⭐ 2</option>
+                    <option value="1">⭐ 1</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Comment</label>
+                <textarea name="comment" class="form-control" rows="3" maxlength="500" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Submit Review
+            </button>
+        </form>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            You must login or register to write a review and give a rating.
+            <br />
+            <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-sm btn-primary mt-2">
+                Login
+            </a>
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-sm btn-outline-primary mt-2">
+                Register
+            </a>
+        </div>
+    }
+
+    @if (Model.Reviews.Any())
+    {
+        @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>
+                        @for (int i = 1; i <= review.Rating; i++)
+                        {
+                            <span>⭐</span>
+                        }
+                    </h5>
+
+                    <p>@review.Comment</p>
+
+                    <small class="text-muted">
+                        By @(review.User?.FullName ?? "User") - @review.CreatedAt.ToString("dd.MM.yyyy")
+                    </small>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="text-muted">There are no reviews for this book yet.</p>
+    }
 </div>
+
+<div class="mb-5 pb-5"></div>

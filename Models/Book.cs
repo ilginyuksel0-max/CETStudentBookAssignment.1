@@ -32,5 +32,7 @@ namespace CetStudentBook.Models
 
         public int? CategoryId { get; set; }
         public Category? Category { get; set; }
+        
+        public List<BookReview> Reviews { get; set; } = new List<BookReview>();
     }
 }

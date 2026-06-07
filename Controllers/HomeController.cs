@@ -3,6 +3,8 @@ using CetStudentBook.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace CetStudentBook.Controllers
 {
@@ -28,12 +30,44 @@ namespace CetStudentBook.Controllers
         {
             var product = await _context.Books
                 .Include(b => b.Category)
+                .Include(b => b.Reviews)
+                    .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (product == null)
                 return NotFound();
 
             return View(product);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddReview(int bookId, int rating, string comment)
+        {
+            if (rating < 1 || rating > 5 || string.IsNullOrWhiteSpace(comment))
+            {
+                TempData["Message"] = "Please enter a rating and comment.";
+                return RedirectToAction("Details", new { id = bookId });
+            }
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var review = new BookReview
+            {
+                BookId = bookId,
+                UserId = userId!,
+                Rating = rating,
+                Comment = comment,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.BookReviews.Add(review);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = "Your review has been added successfully.";
+
+            return RedirectToAction("Details", new { id = bookId });
         }
 
         public async Task<IActionResult> Category(int id)
